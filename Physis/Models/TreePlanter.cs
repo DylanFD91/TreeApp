@@ -11,6 +11,8 @@ namespace Physis.Models
     {
         [Key]
         public int TreePlanterId { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
 
         [ForeignKey("Address")]
         public int AddressId { get; set; }

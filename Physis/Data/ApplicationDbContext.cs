@@ -4,6 +4,7 @@ using System.Text;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Physis.Models;
 
 namespace Physis.Data
 {
@@ -35,15 +36,11 @@ namespace Physis.Data
                 Name = "Vendor",
                 NormalizedName = "VENDOR"
             });
-
-            builder.Entity<IdentityRole>().HasData(
-            new IdentityRole
-            {
-                Id = "872c4215-ba53-4399-9b3a-ccf186d11b17",
-                ConcurrencyStamp = "43e75581-d2b4-4f5d-b5dc-201673334a5d",
-                Name = "Donator",
-                NormalizedName = "DONATOR"
-            });
         }
+
+        public DbSet<Address> Address { get; set; }
+        public DbSet<Tree> Tree { get; set; }
+        public DbSet<TreePlanter> TreePlanter { get; set; }
+        public DbSet<Vendor> Vendor { get; set; }
     }
 }

@@ -59,13 +59,6 @@ namespace Physis.Data.Migrations
                             ConcurrencyStamp = "f2204c01-202b-49fd-baaf-3129b52c54c6",
                             Name = "Vendor",
                             NormalizedName = "VENDOR"
-                        },
-                        new
-                        {
-                            Id = "872c4215-ba53-4399-9b3a-ccf186d11b17",
-                            ConcurrencyStamp = "43e75581-d2b4-4f5d-b5dc-201673334a5d",
-                            Name = "Donator",
-                            NormalizedName = "DONATOR"
                         });
                 });
 
@@ -238,6 +231,109 @@ namespace Physis.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("Physis.Models.Address", b =>
+                {
+                    b.Property<int>("AddressId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("City")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("Latitude")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Longitude")
+                        .HasColumnType("float");
+
+                    b.Property<string>("State")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StreetAddress")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("AddressId");
+
+                    b.ToTable("Address");
+                });
+
+            modelBuilder.Entity("Physis.Models.Tree", b =>
+                {
+                    b.Property<int>("TreeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("AddressId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TreePlanterId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TreeType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("VendorId")
+                        .HasColumnType("int");
+
+                    b.HasKey("TreeId");
+
+                    b.HasIndex("AddressId");
+
+                    b.HasIndex("TreePlanterId");
+
+                    b.HasIndex("VendorId");
+
+                    b.ToTable("Tree");
+                });
+
+            modelBuilder.Entity("Physis.Models.TreePlanter", b =>
+                {
+                    b.Property<int>("TreePlanterId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("AddressId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("TreePlanterId");
+
+                    b.HasIndex("AddressId");
+
+                    b.ToTable("TreePlanter");
+                });
+
+            modelBuilder.Entity("Physis.Models.Vendor", b =>
+                {
+                    b.Property<int>("VendorId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("AddressId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Supply")
+                        .HasColumnType("int");
+
+                    b.Property<string>("VendorName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("VendorId");
+
+                    b.HasIndex("AddressId");
+
+                    b.ToTable("Vendor");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -285,6 +381,45 @@ namespace Physis.Data.Migrations
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Physis.Models.Tree", b =>
+                {
+                    b.HasOne("Physis.Models.Address", "Address")
+                        .WithMany()
+                        .HasForeignKey("AddressId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Physis.Models.TreePlanter", "TreePlanter")
+                        .WithMany()
+                        .HasForeignKey("TreePlanterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Physis.Models.Vendor", "Vendor")
+                        .WithMany()
+                        .HasForeignKey("VendorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Physis.Models.TreePlanter", b =>
+                {
+                    b.HasOne("Physis.Models.Address", "Address")
+                        .WithMany()
+                        .HasForeignKey("AddressId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Physis.Models.Vendor", b =>
+                {
+                    b.HasOne("Physis.Models.Address", "Address")
+                        .WithMany()
+                        .HasForeignKey("AddressId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

@@ -11,7 +11,8 @@ namespace Physis.Models
     {
         [Key]
         public int VendorId { get; set; }
-
+        public string VendorName { get; set; }
+        public int Supply { get; set; }
 
         [ForeignKey("Address")]
         public int AddressId { get; set; }

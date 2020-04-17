@@ -11,10 +11,18 @@ namespace Physis.Models
     {
         [Key]
         public int TreeId { get; set; }
-
+        public string TreeType { get; set; }
 
         [ForeignKey("Address")]
         public int AddressId { get; set; }
         public Address Address { get; set; }
+
+        [ForeignKey("TreePlanter")]
+        public int TreePlanterId { get; set; }
+        public TreePlanter TreePlanter { get; set; }
+
+        [ForeignKey("Vendor")]
+        public int VendorId { get; set; }
+        public Vendor Vendor { get; set; }
     }
 }
