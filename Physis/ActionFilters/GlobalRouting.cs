@@ -20,17 +20,13 @@ namespace Physis.ActionFilters
         { 
             var controller = context.RouteData.Values["controller"]; if (controller.Equals("Home")) 
             { 
-                if (_claimsPrincipal.IsInRole("Tree Planter")) 
+                if (_claimsPrincipal.IsInRole("TreePlanter")) 
                 { 
-                    context.Result = new RedirectToActionResult("Index", "Tree Planters", null); 
+                    context.Result = new RedirectToActionResult("Index", "TreePlanters", null); 
                 } 
                 else if (_claimsPrincipal.IsInRole("Vendor")) 
                 { 
                     context.Result = new RedirectToActionResult("Index", "Vendors", null);
-                }
-                else if (_claimsPrincipal.IsInRole("Donator"))
-                {
-                    context.Result = new RedirectToActionResult("Index", "Donators", null);
                 }
             } 
         }

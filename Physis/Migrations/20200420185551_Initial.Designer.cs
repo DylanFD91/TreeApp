@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Physis.Data;
 
-namespace Physis.Data.Migrations
+namespace Physis.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200417210235_Init")]
-    partial class Init
+    [Migration("20200420185551_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -276,11 +276,16 @@ namespace Physis.Data.Migrations
                     b.Property<string>("TreeType")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("VendorId")
+                        .HasColumnType("int");
+
                     b.HasKey("TreeId");
 
                     b.HasIndex("AddressId");
 
                     b.HasIndex("TreePlanterId");
+
+                    b.HasIndex("VendorId");
 
                     b.ToTable("Tree");
                 });
@@ -393,6 +398,12 @@ namespace Physis.Data.Migrations
                     b.HasOne("Physis.Models.TreePlanter", "TreePlanter")
                         .WithMany()
                         .HasForeignKey("TreePlanterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Physis.Models.Vendor", "Vendor")
+                        .WithMany()
+                        .HasForeignKey("VendorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

@@ -156,5 +156,10 @@ namespace Physis.Controllers
         {
             return _context.TreePlanter.Any(e => e.TreePlanterId == id);
         }
+
+        public async Task<IActionResult> GoogleMaps ()
+        {
+            return View();
+        }
     }
 }

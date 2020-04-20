@@ -10,7 +10,6 @@ using Physis.Models;
 
 namespace Physis.Controllers
 {
-    [ServiceFilter(typeof(GlobalRouting))]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
