@@ -3,6 +3,33 @@
     ViewData["Title"] = "View";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@model Physis.Models.GoogleMapsViewModel
 
 <h1>Tree Planting Map</h1>
 
+<div id="GoogleMap" style="width: 700px; height: 500px">
+
+</div>
+
+<script>
+  // Initialize and add the map
+function initMap() {
+  // The location of Uluru
+  var uluru = {lat: -25.344, lng: 131.036};
+  // The map, centered at Uluru
+  var map = new google.maps.Map(
+      document.getElementById('GoogleMap'), {zoom: 4, center: uluru});
+  // The marker, positioned at Uluru
+    var marker = new google.maps.Marker({ position: uluru, map: map });
+
+    @for (var i = 0; i < Model.Trees.Count; i++) {
+        <text>
+             var marker = new google.maps.Marker({ position: new google.maps.LatLng(@Model.Trees[i].Address.Latitude, @Model.Trees[i].Address.Longitude), map: map })
+        </text>
+     }
+}
+</script>
+
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=@ApiKeys.GoogleMapsApi&callback=initMap">
+</script>

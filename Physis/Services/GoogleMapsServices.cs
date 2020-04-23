@@ -11,6 +11,17 @@ namespace Physis.Services
 {
     public class GoogleMapsServices
     {
+        public string ConvertAddressToURL(Address address)
+        {
+            string streetAddress = address.StreetAddress.Replace(" ", "+");
+            string city = address.City.Replace(" ", "+");
+            string state = address.State.Replace(" ", "+");
+
+            string url = $"https://maps.googleapis.com/maps/api/geocode/json?address={streetAddress},+{city},+{state}&key={ApiKeys.GoogleMapsApi}";
+
+            return url;
+        }
+
         public async Task<double> GetLatitude(string url, Address address)
         {
             double latitude;
@@ -35,7 +46,7 @@ namespace Physis.Services
             {
                 string jsonData = await response.Content.ReadAsStringAsync();
                 JObject jsonDataObject = JsonConvert.DeserializeObject<JObject>(jsonData);
-                longitude = Double.Parse(jsonDataObject["results"][0]["geometry"]["location"]["lon"].ToString());
+                longitude = Double.Parse(jsonDataObject["results"][0]["geometry"]["location"]["lng"].ToString());
                 return longitude;
             }
             return 0;

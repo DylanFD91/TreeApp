@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DocumentFormat.OpenXml.Drawing.Charts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using Physis.Data;
 using Physis.Models;
 
@@ -157,9 +159,42 @@ namespace Physis.Controllers
             return _context.TreePlanter.Any(e => e.TreePlanterId == id);
         }
 
-        public async Task<IActionResult> GoogleMaps ()
+
+        //Add Tree To Database
+        /*public async Task<IActionResult> AddTree()
         {
-            return View();
+
+        }*/
+
+
+
+        //Google Maps Methods
+        public async Task<IActionResult> GoogleMaps()
+        {
+            GoogleMapsViewModel model = new GoogleMapsViewModel()
+            {
+                Trees = _context.Tree.Select(t => t).ToList(),
+                Vendors = _context.Vendor.Select(v => v).ToList()
+            };
+            for (int i = 0; i < model.Trees.Count; i++)
+            {
+                model.Trees[i].Address = _context.Address.Where(a => a.AddressId == model.Trees[i].AddressId).FirstOrDefault();
+            }
+            return View(model);
         }
+
+        
+
+
+
+        //Chart Methods
+        /*public async Task<IActionResult> Chart()
+        {
+
+        }
+        public async Task<IActionResult> NearestCities()
+        {
+
+        }*/
     }
 }
