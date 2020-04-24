@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
 using DocumentFormat.OpenXml.Drawing.Charts;
@@ -9,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Physis.Data;
 using Physis.Models;
+using Stripe;
 
 namespace Physis.Controllers
 {
@@ -59,10 +61,11 @@ namespace Physis.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("TreePlanterId,FirstName,LastName,AddressId")] TreePlanter treePlanter)
+        public async Task<IActionResult> Create([Bind("TreePlanterId,FirstName,LastName,Address")] TreePlanter treePlanter)
         {
             if (ModelState.IsValid)
             {
+                //add address to get lat and lon
                 _context.Add(treePlanter);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -159,11 +162,34 @@ namespace Physis.Controllers
             return _context.TreePlanter.Any(e => e.TreePlanterId == id);
         }
 
+        public IActionResult Payment()
+        {
+            var StripePublishKey = ConfigurationManager.AppSettings["pk_test_jvb0TTntem8sUEi8RzF0SkSd00X09HQtzY"];
+            ViewBag.StripePublishKey = StripePublishKey; return View();
+        }
+        public IActionResult Charge(string stripeEmail, string stripeToken)
+        {
+            var customers = new CustomerService();
+            var charges = new ChargeService();
+            var customer = customers.Create(new CustomerCreateOptions
+            { Email = stripeEmail, Source = stripeToken });
+            var charge = charges.Create(new ChargeCreateOptions
+            {
+                Amount = 3000,//charge in cents                 
+                Description = "Sapling Purchase",
+                Currency = "usd",
+                Customer = customer.Id
+            });
+            // further application specific code goes here            
+            return View();
+        }
+
+
 
         //Add Tree To Database
         /*public async Task<IActionResult> AddTree()
         {
-
+            
         }*/
 
 
@@ -174,7 +200,8 @@ namespace Physis.Controllers
             GoogleMapsViewModel model = new GoogleMapsViewModel()
             {
                 Trees = _context.Tree.Select(t => t).ToList(),
-                Vendors = _context.Vendor.Select(v => v).ToList()
+                Vendors = _context.Vendor.Select(v => v).ToList(),
+                TreePlanter = _context.TreePlanter.Where(v => v.TreePlanterId == 1).Include(v => v.Address).FirstOrDefault()
             };
             for (int i = 0; i < model.Trees.Count; i++)
             {
@@ -183,14 +210,24 @@ namespace Physis.Controllers
             return View(model);
         }
 
-        
+
 
 
 
         //Chart Methods
         /*public async Task<IActionResult> Chart()
         {
-
+            List<DataPoint> dataPoints = new List<DataPoint>();
+ 
+			dataPoints.Add(new DataPoint("", ));
+			dataPoints.Add(new DataPoint("", ));
+			dataPoints.Add(new DataPoint("", ));
+			dataPoints.Add(new DataPoint("", ));
+			dataPoints.Add(new DataPoint("", ));
+ 
+			ViewBag.DataPoints = JsonConvert.SerializeObject(dataPoints);
+			
+			return View();
         }
         public async Task<IActionResult> NearestCities()
         {

@@ -10,7 +10,7 @@ namespace Physis.Models
     {
         public List<Tree> Trees { get; set; }
         public List<Vendor> Vendors { get; set; }
-        public IdentityUser IdentityUser { get; set;}
+        public IdentityUser IdentityUser { get; set; }
         public TreePlanter TreePlanter { get; set; }
     }
 }

@@ -4,5 +4,37 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Payment</h1>
+<h1>Purchase A Tree</h1>
 
+<form action="/Payment/Charge" method="POST">
+    <div>
+        <img src="~/Images/OakSapling.png" />
+        <h4>Oak Sapling</h4>
+    </div>
+    <article>
+        <label>Amount: $30.00</label>
+    </article>
+    <script src="//checkout.stripe.com/v2/checkout.js"
+            class="stripe-button"
+            data-key="@ViewBag.stripeSecretKey"
+            data-locale="auto"
+            data-description="Sample Charge"
+            data-amount="3000">
+    </script>
+</form>
+<form action="/Payment/Charge" method="POST">
+    <div>
+        <img src="~/Images/SpruceSapling.png" />
+        <h4>Spruce Sapling</h4>
+    </div>
+    <article>
+        <label>Amount: $45.00</label>
+    </article>
+    <script src="//checkout.stripe.com/v2/checkout.js"
+            class="stripe-button"
+            data-key="@ViewBag.stripeSecretKey"
+            data-locale="auto"
+            data-description="Sample Charge"
+            data-amount="4500">
+    </script>
+</form>
