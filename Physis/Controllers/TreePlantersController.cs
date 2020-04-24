@@ -162,6 +162,9 @@ namespace Physis.Controllers
             return _context.TreePlanter.Any(e => e.TreePlanterId == id);
         }
 
+
+
+        //Stripe Payment Methods
         public IActionResult Payment()
         {
             var StripePublishKey = ConfigurationManager.AppSettings["pk_test_jvb0TTntem8sUEi8RzF0SkSd00X09HQtzY"];
