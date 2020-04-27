@@ -12,18 +12,24 @@
 </div>
 
 <script>
-    
+
   // Initialize and add the map
 function initMap() {
   // The location of Uluru
-  var uluru = {lat: @Model.TreePlanter.Address.Latitude, lng: @Model.TreePlanter.Address.Longitude};
-  // The map, centered at Uluru
+  var home = {lat: @Model.TreePlanter.Address.Latitude, lng: @Model.TreePlanter.Address.Longitude};
+  // The map, centered at home address
   var map = new google.maps.Map(
-      document.getElementById('GoogleMap'), {zoom: 8, center: uluru});
+      document.getElementById('GoogleMap'), { zoom: 12, center: home });
+  // Marker for Home Address
+  var homeMarker = new google.maps.Marker({ position: home, map: map })
 
     @for (var i = 0; i < Model.Trees.Count; i++) {
         <text>
-             var marker = new google.maps.Marker({ position: new google.maps.LatLng(@Model.Trees[i].Address.Latitude, @Model.Trees[i].Address.Longitude), map: map })
+        var treeMarker = new google.maps.Marker({
+        position: new google.maps.LatLng(@Model.Trees[i].Address.Latitude, @Model.Trees[i].Address.Longitude),
+        map: map,
+        icon:"http://maps.google.com/mapfiles/ms/icons/green-dot.png"
+        })
         </text>
      }
 }

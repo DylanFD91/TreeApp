@@ -218,21 +218,23 @@ namespace Physis.Controllers
 
 
         //Chart Methods
-        /*public async Task<IActionResult> Chart()
+        public IActionResult Chart()
         {
-            List<DataPoint> dataPoints = new List<DataPoint>();
+            /*List<DataPoint> dataPoints = new List<DataPoint>();
  
-			dataPoints.Add(new DataPoint("", ));
-			dataPoints.Add(new DataPoint("", ));
-			dataPoints.Add(new DataPoint("", ));
-			dataPoints.Add(new DataPoint("", ));
-			dataPoints.Add(new DataPoint("", ));
+			dataPoints.Add(new DataPoint("Mchenry", 64));
+			dataPoints.Add(new DataPoint("Fox Lake", 21));
+			dataPoints.Add(new DataPoint("Volo", 15));
+			dataPoints.Add(new DataPoint("Crystal Lake", 76));
+			dataPoints.Add(new DataPoint("Woodstock", 49));
  
-			ViewBag.DataPoints = JsonConvert.SerializeObject(dataPoints);
-			
-			return View();
+			ViewBag.DataPoints = JsonConvert.SerializeObject(dataPoints);*/
+
+            //add to data datapoint in the view = @Html.Raw(ViewBag.DataPoints)
+
+            return View();
         }
-        public async Task<IActionResult> NearestCities()
+        /*public async Task<IActionResult> NearestCities()
         {
 
         }*/
