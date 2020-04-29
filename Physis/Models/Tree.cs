@@ -20,9 +20,5 @@ namespace Physis.Models
         [ForeignKey("TreePlanter")]
         public int TreePlanterId { get; set; }
         public TreePlanter TreePlanter { get; set; }
-
-        [ForeignKey("Vendor")]
-        public int VendorId { get; set; }
-        public Vendor Vendor { get; set; }
     }
 }

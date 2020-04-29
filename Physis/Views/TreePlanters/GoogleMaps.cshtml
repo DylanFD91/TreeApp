@@ -14,26 +14,67 @@
 <script>
 
   // Initialize and add the map
-function initMap() {
-  // The location of Uluru
-  var home = {lat: @Model.TreePlanter.Address.Latitude, lng: @Model.TreePlanter.Address.Longitude};
-  // The map, centered at home address
-  var map = new google.maps.Map(
-      document.getElementById('GoogleMap'), { zoom: 12, center: home });
-  // Marker for Home Address
-  var homeMarker = new google.maps.Marker({ position: home, map: map })
+    function initMap() {
+        // The location of Home
+        var home = { lat: @Model.TreePlanter.Address.Latitude, lng: @Model.TreePlanter.Address.Longitude};
+        // The map, centered at home address
+        var map = new google.maps.Map(
+            document.getElementById('GoogleMap'), { zoom: 16, center: home });
+        // Marker for Home Address
+        var homeMarker = new google.maps.Marker({
+            position: home,
+            map: map
+        });
 
-    @for (var i = 0; i < Model.Trees.Count; i++) {
-        <text>
-        var treeMarker = new google.maps.Marker({
-        position: new google.maps.LatLng(@Model.Trees[i].Address.Latitude, @Model.Trees[i].Address.Longitude),
-        map: map,
-        icon:"http://maps.google.com/mapfiles/ms/icons/green-dot.png"
-        })
-        </text>
-     }
-}
+        //content window
+        var infowindow = new google.maps.InfoWindow();
+
+
+       @foreach (var item in Model.Trees)
+        {
+          <text>
+            var treeMarker = new google.maps.Marker({
+                position: new google.maps.LatLng(@item.Address.Latitude, @item.Address.Longitude),
+                map: map,
+                icon: "http://maps.google.com/mapfiles/ms/icons/green-dot.png"
+            });
+            (function (marker) {
+                google.maps.event.addListener(marker, 'click', function () {
+                    infowindow.setContent(
+                        "This is a tree planted by @Model.TreePlanter.FirstName" +
+                        '<p><iframe src="https://www.facebook.com/plugins/share_button.php?href=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&layout=button&size=small&width=67&height=20&appId" width="67" height="20" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media"></iframe></p>'
+                    );
+                    infowindow.open(map, marker);
+                });
+            })(treeMarker);
+          </text>
+        }
+
+        @*@foreach (var item in Model.Vendors)
+         {
+           <text>
+            var vendorMarker = new google.maps.Marker({
+                position: new google.maps.LatLng(@item.Address.Latitude, @item.Address.Longitude),
+                map: map,
+                icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+            });
+            (function (marker) {
+                google.maps.event.addListener(marker, 'click', function () {
+                    infowindow.setContent("This is a Vendor");
+                    infowindow.open(map, marker);
+                });
+            })(vendorMarker);
+           </text>
+         }*@
+    }
+
 </script>
+
+
+<a asp-action="Create" asp-controller="Tree">Plant A Tree</a>
+
+<div id="fb-root"></div>
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v6.0"></script>
 
 <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=@ApiKeys.GoogleMapsApi&callback=initMap">
